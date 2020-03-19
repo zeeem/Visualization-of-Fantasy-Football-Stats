@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<!-- <script type="text/javascript">
+	var temp_chart2;
+
+am4core.ready(function() {
+	am4core.useTheme(am4themes_animated);
+	var chart = am4core.create("temp_chart", am4charts.XYChart);
+		temp_chart0.dataSource.url = "player_name_csv.csv";
+		temp_chart0.dataSource.parser = new am4core.CSVParser();
+		temp_chart0.dataSource.parser.options.useColumnNames = true;
+		temp_chart2 = temp_chart0;
+	});
+
+	// console.log(chart1.data);
+
+ //    function read_player_name_csv(){
+ //    	am4core.useTheme(am4themes_animated);
+ //    	var temp_chart0 = am4core.create("temp_chart", am4charts.XYChart);
+
+
+
+	// 	console.log(temp_chart0.data);
+
+ //    }
+</script> -->
+
+<html>
+<head>
+<title>Player Comparison</title>
+
+
+	<link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://www.gstatic.com/firebasejs/7.11.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.11.0/firebase-firestore.js"></script>
+    <script src="https://www.amcharts.com/lib/4/core.js"></script>
+    <script src="https://www.amcharts.com/lib/4/charts.js"></script>
+    <script src="https://www.amcharts.com/lib/4/themes/kelly.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>
+
+</head>
+<body>
+
+<h1 class = "header" style = "font-family: 'Poppins', sans-serif;font-weight:700;margin:0">FIFA Fantasy League Helper</h1>
+<!-- 	<style>
+	#temp_chart {
+	  width: 100%;
+	  height: 500px;
+	}
+	</style> -->
+
+<!-- 	<script type="text/javascript">
+	var temp_chart2;
+	var data = [];
+	am4core.ready(function() {
+		am4core.useTheme(am4themes_animated);
+		var temp_chart0 = am4core.create("temp_chart", am4charts.XYChart);
+			temp_chart0.dataSource.url = "player_name_csv.csv";
+			temp_chart0.dataSource.parser = new am4core.CSVParser();
+			temp_chart0.dataSource.parser.options.useColumnNames = true;
+			temp_chart2 = temp_chart0;
+			data = temp_chart0.data;
+
+
+		});
+
+
+	</script> -->
+
+	<script type="text/javascript">
+	var temp_player_name;
+	var allSearchedPlayer_attributeArray = []; //array of player data consisting attributes 'attrData'
+	var allSearchedPlayer_infoArray = []; //array of player data consisting general informations 'playerInfoData'
+	var allSearchedPlayer_SubRatingsArray = []; //array of 'playerSubRatings'
+
+	var attrData = []; //player attribute data
+	var playerInfoData = []; //player info data
+	var comparison_data = []; //player comparison graph data
+
+	var playerIDFromSearch = []; //player ID from the search bar
+
+	var data = data = [{"player_name": "Alexis Sanchez", "player_id": "184941"},
+				{"player_name": "Andrea Barzagli", "player_id": "137186"},
+				{"player_name": "Andres Iniesta", "player_id": "41"},
+				{"player_name": "Angel Di Maria", "player_id": "183898"},
+				{"player_name": "Arjen Robben", "player_id": "9014"},
+				{"player_name": "Arturo Vidal", "player_id": "181872"},
+				{"player_name": "Bastian Schweinsteiger", "player_id": "121944"},
+				{"player_name": "Carlos Tevez", "player_id": "143001"},
+				{"player_name": "Cesc Fabregas", "player_id": "162895"},
+				{"player_name": "Cristiano Ronaldo", "player_id": "20801"},
+				{"player_name": "David Alaba", "player_id": "197445"},
+				{"player_name": "David De Gea", "player_id": "193080"},
+				{"player_name": "David Silva", "player_id": "168542"},
+				{"player_name": "Diego Costa", "player_id": "179844"},
+				{"player_name": "Diego Godin", "player_id": "182493"},
+				{"player_name": "Eden Hazard", "player_id": "183277"},
+				{"player_name": "Edinson Cavani", "player_id": "179813"},
+				{"player_name": "Franck Ribery", "player_id": "156616"},
+				{"player_name": "Gareth Bale", "player_id": "173731"},
+				{"player_name": "Gerard Pique", "player_id": "152729"},
+				{"player_name": "Giorgio Chiellini", "player_id": "138956"},
+				{"player_name": "Gonzalo Higuain", "player_id": "167664"},
+				{"player_name": "Henrik Mkhitaryan", "player_id": "192883"},
+				{"player_name": "Hugo Lloris", "player_id": "167948"},
+				{"player_name": "Ivan Rakitic", "player_id": "168651"},
+				{"player_name": "James Rodriguez", "player_id": "198710"},
+				{"player_name": "Jerome Boateng", "player_id": "183907"},
+				{"player_name": "Karim Benzema", "player_id": "165153"},
+				{"player_name": "Kevin de Bruyne", "player_id": "192985"},
+				{"player_name": "Lionel Messi", "player_id": "158023"},
+				{"player_name": "Luis Suarez", "player_id": "176580"},
+				{"player_name": "Luka Modric", "player_id": "177003"},
+				{"player_name": "Manuel Neuer", "player_id": "167495"},
+				{"player_name": "Marco Reus", "player_id": "188350"},
+				{"player_name": "Mats Hummels", "player_id": "178603"},
+				{"player_name": "Mesut Oezil", "player_id": "176635"},
+				{"player_name": "Miranda", "player_id": "168609"},
+				{"player_name": "Neymar", "player_id": "190871"},
+				{"player_name": "Paul Pogba", "player_id": "195864"},
+				{"player_name": "Petr Cech", "player_id": "48940"},
+				{"player_name": "Philipp Lahm", "player_id": "121939"},
+				{"player_name": "Robert Enke", "player_id": "158400"},
+				{"player_name": "Robert Lewandowski", "player_id": "188545"},
+				{"player_name": "Santi Cazorla", "player_id": "146562"},
+				{"player_name": "Sergio Aguero", "player_id": "153079"},
+				{"player_name": "Sergio Busquets", "player_id": "189511"},
+				{"player_name": "Sergio Ramos", "player_id": "155862"},
+				{"player_name": "Thiago Silva", "player_id": "164240"},
+				{"player_name": "Thibaut Courtois", "player_id": "192119"},
+				{"player_name": "Thomas Mueller", "player_id": "189596"},
+				{"player_name": "Toni Kroos", "player_id": "182521"},
+				{"player_name": "Vincent Kompany", "player_id": "139720"},
+				{"player_name": "Wayne Rooney", "player_id": "54050"},
+				{"player_name": "Xavi Hernandez", "player_id": "10535"},
+				{"player_name": "Yaya Toure", "player_id": "20289"}];
+
+	var data2 = [{
+			      "player_name": "Lionel Messi",
+			      "player_id": '158023'
+			    }, {
+			      "player_name": "Hazard",
+			      "player_id": '183277'
+			    }, {
+			      "player_name": "De Bruyne",
+			      "player_id": '192985'
+			    }, {
+			      "player_name": "Silva",
+			      "player_id": '456436'
+			    }, {
+			      "player_name": "Villa",
+			      "player_id": '2342134'
+			    }];
+
+	// read_player_name_csv();
+
+
+	</script>
+	<div style="text-align:center;margin:60px 0 0;">
+		<h1 class = "" style = "font-family: 'Poppins', sans-serif;font-weight:700;margin:0">Select 3 Players to Compare</h1>
+	</div>
+   <div class="wrapper-top">
+        <div class = "upperLeft" style=" text-align:center">
+
+		<div class="dropdown">
+		  <button class="btn btn-info btn-lg dropdown-toggle" type="button" id="dropdownMenuButton1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    Player 1
+		  </button>
+		  <div id ="dropdown1" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+
+		  	<script type="text/javascript">
+              	for(var i = 0; i < data.length; i++) {
+
+              		playerid_string = String(data[i].player_id);
+              		var newLine = '<a class="dropdown-item" id= "'+ data[i].player_name +'" onclick="onclick_saveId('+ data[i].player_id +')">'+ data[i].player_name +'</a>';
+
+			  		document.getElementById("dropdown1").innerHTML += newLine;
+				}
+
+				function onclick_saveId(option_id){
+					temp_player_id = String(option_id);
+					console.log(temp_player_id);
+
+					playerIDFromSearch.push(temp_player_id);
+            		// load_all_charts_db();
+				}
+
+		  	</script>
+		  </div>
+		</div>
+        </div>
+
+        <div class = "upperMid" style=" text-align:center">
+		<div class="dropdown">
+		  <button class="btn btn-info btn-lg dropdown-toggle" type="button" id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    Player 2
+		  </button>
+		  <div id ="dropdown2" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+
+		  	<script type="text/javascript">
+              	for(var i = 0; i < data.length; i++) {
+
+              		playerid_string = String(data[i].player_id)
+              		var newLine = '<a class="dropdown-item" onclick="onclick_saveId('+ data[i].player_id +')">'+ data[i].player_name +'</a>'
+
+			  		document.getElementById("dropdown2").innerHTML += newLine;
+				}
+
+		  	</script>
+		  </div>
+		</div>
+       </div>
+
+        <div class = "upperRight" style=" text-align:center">
+           <!--          <select id="selectNumber3">
+                 <option>Choose a player</option>
+            </select>
+            <button name = "btn3" type="submit" class="btn btn-secondary" style = "box-shadow: 0 4px 8px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19); color: #fff; background-color: #17a2b8; border-color: #17a2b8;">Add</button> -->
+        <div class="dropdown">
+		  <button class="btn btn-info btn-lg dropdown-toggle" type="button" id="dropdownMenuButton3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    Player 3
+		  </button>
+		  <div id ="dropdown3" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+
+		  	<script type="text/javascript">
+              	for(var i = 0; i < data.length; i++) {
+
+              		playerid_string = String(data[i].player_id)
+              		var newLine = '<a class="dropdown-item" onclick="onclick_saveId('+ data[i].player_id +')">'+ data[i].player_name +'</a>'
+
+			  		document.getElementById("dropdown3").innerHTML += newLine;
+
+				    // var opt = data[i].player_name;
+				    // el.textContent = opt;
+				    // el.value = data[i].player_id;
+				    // select.appendChild(el);
+				}
+
+				function onclick_saveId(option_id){
+					temp_player_id = String(option_id);
+					console.log(temp_player_id);
+					
+
+					playerIDFromSearch.push(temp_player_id);
+            		// load_all_charts_db();
+				}
+
+		  	</script>
+<!-- 		    <a class="dropdown-item" href="#">Action</a>
+		    <a class="dropdown-item" href="#">Another action</a>
+		    <a class="dropdown-item" href="#">Something else here</a> -->
+		  </div>
+		</div>
+        </div>
+    </div>
+
+
+    <div style="text-align:center;margin:20px 0px 40px">
+		<button type="button" class="btn btn-info btn-lg" style="text-align: center; margin-right:10px" onclick="SUBMIT_SEARCH()">Compare Players</button>
+	    <button type="button" class="btn btn-info btn-lg" style="text-align: center;" onclick="RESET_SEARCH()">Reset Selection</button>
+	</div>
+
+    
+    <script type="text/javascript">
+
+    var clickedBool = false;
+
+	function SUBMIT_SEARCH(){
+		if(!clickedBool){
+			load_all_charts_db();
+			clickedBool = true;
+	} else{
+			alert("Please click RESET to start comparing new players!");
+		}
+	}
+
+	function RESET_SEARCH(){
+		clickedBool = false;
+		reset_vals();
+	}
+
+	function reset_vals(){
+		allSearchedPlayer_attributeArray = []; //array of player data consisting attributes 'attrData'
+		allSearchedPlayer_infoArray = []; //array of player data consisting general informations 'playerInfoData'
+		allSearchedPlayer_SubRatingsArray = []; //array of 'playerSubRatings'
+
+		attrData = []; //player attribute data
+		playerInfoData = []; //player info data
+		comparison_data = []; //player comparison graph data
+
+		playerIDFromSearch = []; //player ID from the search bar
+	}
+
+    </script>
+
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+
+<script type="text/javascript">
+	var allSearchedPlayer_attributeArray = []; //array of player data consisting attributes 'attrData'
+	var allSearchedPlayer_infoArray = []; //array of player data consisting general informations 'playerInfoData'
+	var allSearchedPlayer_SubRatingsArray = []; //array of 'playerSubRatings'
+
+	var attrData = []; //player attribute data
+	var playerInfoData = []; //player info data
+	var comparison_data = []; //player comparison graph data
+
+	var playerIDFromSearch = []; //player ID from the search bar
+
+
+	// playerIDFromSearch.push('158023') //it should be changed to the searched player ID - messi
+	// playerIDFromSearch.push('183277') //2nd player to compare - hazard
+	// playerIDFromSearch.push('192985') //3rd player to compare - de bruyne
+	//*************
+	// after selecting 2player and pressing submit, two id will be added to the "playerIDFromSearch" array 
+	//*************
+
+	var docs; //temp doc or response from firestore query
+	var charts2; // replcia of chart for debugging
+	var tempD; // temp sample data
+
+
+  	// Your web app's Firebase configuration
+	var firebaseConfig = {
+	apiKey: "AIzaSyB94wBHiiXMYK-IgEB--1FlS6it5i4ZZtE",
+	authDomain: "fflh-e186e.firebaseapp.com",
+	databaseURL: "https://fflh-e186e.firebaseio.com",
+	projectId: "fflh-e186e",
+	storageBucket: "fflh-e186e.appspot.com",
+	messagingSenderId: "169781745481",
+	appId: "1:169781745481:web:fb7e9abdfd03e0c7e3ac98"
+	};
+	// Initialize Firebase
+	firebase.initializeApp(firebaseConfig);
+</script>
+
+
+<script type="text/javascript">
+
+function load_all_charts_db(){
+var db = firebase.firestore();
+db.collection("Player").where("player_fifa_api_id", "in", playerIDFromSearch)
+	.get().then(function(querySnapshot) {
+    querySnapshot.forEach(function(doc) {
+        // doc.data() is never undefined for query doc snapshots
+        console.log(doc.id, " => ", doc.data());
+
+        docs = doc.data();
+
+        attributes = docs.attributes;
+
+        //making the all player array empty
+		attrData = [];
+		playerInfoData = [];
+
+        if (!doc.exists) {
+			console.log('No such document!');
+			} else {
+				// console.log(Object.keys(docs.attributes));
+				var attrKeysObj = Object.keys(docs.attributes);
+				var playerInfoObj = Object.keys(docs);
+			}
+
+		// saving player info
+		playerInfoObj.forEach(element => {
+			  // console.log(element);
+			  	// element_ = element.replace("_", " ").toLowerCase();
+			  	// element_ = element_[0].toUpperCase() + element_.slice(1,element_.length);
+			  	
+			  	if(element == "attributes"){
+			  		return; //skipping overall_rating from attrData
+			  	}
+
+			  	playerInfoVal = {
+			  		"key": element,
+			  		"value" : docs[element]
+			  	};
+				playerInfoData.push(playerInfoVal);
+		}); //end forEach
+
+		// saving player attributes
+		attrKeysObj.forEach(element => {
+			  // console.log(element);
+			  if(Number.isInteger(docs.attributes[element])){
+			  	element_ = element.replace("_", " ").toLowerCase();
+			  	element_ = element_[0].toUpperCase() + element_.slice(1,element_.length);
+			  	if(element == "overall_rating"){
+			  		return; //skipping overall_rating from attrData
+			  	}
+			  	attrVal = {
+			  		"key": element_,
+			  		"value" : docs.attributes[element]
+			  	};
+				attrData.push(attrVal);
+			}
+		}); //end forEach
+
+	allSearchedPlayer_attributeArray.push(attrData);
+	allSearchedPlayer_infoArray.push(playerInfoData);
+
+    });
+
+    //for each attribute calculating subratings to compare
+    allSearchedPlayer_attributeArray.forEach(element => {
+
+		allSearchedPlayer_SubRatingsArray.push(calculateSubRatings(element));
+
+    }); //end forEach
+
+
+    //starting the sub rating comparison of the searched players
+    show_subRatings_comparison_chart(allSearchedPlayer_SubRatingsArray);
+
+    
+
+}); //firestore query
+
+}
+
+function calculateSubRatings(attribute_array) {
+
+	var pace = (attribute_array[0].value + 
+				attribute_array[27].value) / 2;
+
+	var shooting = (attribute_array[22].value + 
+					attribute_array[8].value + 
+					attribute_array[25].value + 
+					attribute_array[19].value + 
+					attribute_array[32].value + 
+					attribute_array[21].value) / 6;
+
+	var passing = (attribute_array[31].value + 
+					attribute_array[5].value + 
+					attribute_array[9].value + 
+					attribute_array[24].value + 
+					attribute_array[18].value + 
+					attribute_array[6].value) / 6;
+
+	var dribbling = (attribute_array[2].value + 
+					attribute_array[3].value + 
+					attribute_array[23].value + 
+					attribute_array[4].value + 
+					attribute_array[7].value) / 5;
+
+	var defending = (attribute_array[16].value + 
+					attribute_array[15].value + 
+					attribute_array[20].value + 
+					attribute_array[29].value + 
+					attribute_array[26].value) / 5;
+
+	var physical = (attribute_array[17].value + 
+					attribute_array[28].value + 
+					attribute_array[30].value + 
+					attribute_array[1].value) / 4;
+
+	// subRatingResult = {
+	// 	"pace" : pace,
+	// 	"shooting" : shooting,
+	// 	"passing" : passing,
+	// 	"dribbling" : dribbling,
+	// 	"defending" : defending,
+	// 	"physical" : physical
+	// };
+
+	subRatingResult = [{
+		  "key": "pace",
+		  "value": pace
+		}, {
+		  "key": "shooting",
+		  "value": shooting
+		}, {
+		  "key": "passing",
+		  "value": passing
+		}, {
+		  "key": "dribbling",
+		  "value": dribbling
+		}, {
+		  "key": "defending",
+		  "value": defending
+		}, {
+		  "key": "physical",
+		  "value": physical
+		}]
+
+	return subRatingResult;
+
+}
+
+	</script>
+
+
+    <!-- Styles -->
+    <style>
+    #chartdiv {
+      width: 100%;
+      height: 500px;
+    }
+
+    </style>
+
+    <!-- Resources -->
+
+
+    <!-- Chart code -->
+<script>
+
+    // function myFunction(p1, p2) {
+    // return p1 * p2;   // The function returns the product of p1 and p2
+    // }
+
+    function show_subRatings_comparison_chart(subrating_array) {
+
+    am4core.useTheme(am4themes_animated);
+    // Themes end
+
+    var chart = am4core.create('chartdiv', am4charts.XYChart)
+    chart.colors.step = 2;
+
+    chart.legend = new am4charts.Legend()
+    chart.legend.position = 'top'
+    chart.legend.paddingBottom = 20
+    chart.legend.labels.template.maxWidth = 200
+
+    var xAxis = chart.xAxes.push(new am4charts.CategoryAxis())
+    xAxis.dataFields.category = 'category'
+    xAxis.renderer.cellStartLocation = 0.1
+    xAxis.renderer.cellEndLocation = 0.9
+    xAxis.renderer.grid.template.location = 0;
+
+    var yAxis = chart.yAxes.push(new am4charts.ValueAxis());
+    yAxis.min = 0;
+
+    function createSeries(value, name) {
+        var series = chart.series.push(new am4charts.ColumnSeries())
+        series.dataFields.valueY = value
+        series.dataFields.categoryX = 'category'
+        series.name = name
+
+        series.events.on("hidden", arrangeColumns);
+        series.events.on("shown", arrangeColumns);
+
+        var bullet = series.bullets.push(new am4charts.LabelBullet())
+        bullet.interactionsEnabled = false
+        bullet.dy = 15;
+        bullet.label.text = '{valueY}'
+        bullet.label.fill = am4core.color('#ffffff')
+
+        return series;
+    }
+
+    //debugging chart
+    charts2 = chart;
+
+    var playerNum = ['first', 'second', 'third'];
+
+    for (var i = 0; i < subrating_array[0].length; i++) {
+        comp_val = {};
+        for (var j = 0; j < subrating_array.length; j++) {
+
+            var cat = subrating_array[j][i].key;
+            var val = subrating_array[j][i].value;
+
+            comp_val['category'] = cat;
+            comp_val[playerNum[j]] = parseInt(val);
+
+            // comp_val = {
+         //        category: cat,
+         //        first: val1,
+         //        second: val2,
+         //        third: val3
+         //    };
+        }
+        comparison_data.push(comp_val);
+    }
+
+
+    chart.data = comparison_data;
+
+    // chart.data = [
+    //     {
+    //         category: 'Pace',
+    //         first: 40,
+    //         second: 55,
+    //         third: 60
+    //     },
+    //     {
+    //         category: 'Shooting',
+    //         first: 30,
+    //         second: 78,
+    //         third: 69
+    //     },
+    //     {
+    //         category: 'Passing',
+    //         first: 27,
+    //         second: 40,
+    //         third: 45
+    //     },
+    //     {
+    //         category: 'Dribbling',
+    //         first: 50,
+    //         second: 33,
+    //         third: 22
+    //     },
+    //     {
+    //         category: 'Defending',
+    //         first: 50,
+    //         second: 33,
+    //         third: 22
+    //     },
+    //     {
+    //         category: 'Physical',
+    //         first: 50,
+    //         second: 33,
+    //         third: 22
+    //     }]
+
+    for (var i = 0; i < subrating_array.length; i++) {
+        // console.log(allSearchedPlayer_infoArray[i][4].value);
+        var p_name = allSearchedPlayer_infoArray[i][4].value
+        createSeries(playerNum[i], p_name);
+
+    }
+
+    // createSeries('first', 'Player 1');
+    // createSeries('second', 'Player 2');
+    // createSeries('third', 'Player 3');
+
+    chart.scrollbarX = new am4core.Scrollbar();
+
+    function arrangeColumns() {
+
+        var series = chart.series.getIndex(0);
+        var w = 1 - xAxis.renderer.cellStartLocation - (1 - xAxis.renderer.cellEndLocation);
+        if (series.dataItems.length > 1) {
+            var x0 = xAxis.getX(series.dataItems.getIndex(0), "categoryX");
+            var x1 = xAxis.getX(series.dataItems.getIndex(1), "categoryX");
+            var delta = ((x1 - x0) / chart.series.length) * w;
+            if (am4core.isNumber(delta)) {
+                var middle = chart.series.length / 2;
+
+                var newIndex = 0;
+                chart.series.each(function(series) {
+                    if (!series.isHidden && !series.isHiding) {
+                        series.dummyData = newIndex;
+                        newIndex++;
+                    }
+                    else {
+                        series.dummyData = chart.series.indexOf(series);
+                    }
+                })
+                var visibleCount = newIndex;
+                var newMiddle = visibleCount / 2;
+
+                chart.series.each(function(series) {
+                    var trueIndex = chart.series.indexOf(series);
+                    var newIndex = series.dummyData;
+
+                    var dx = (newIndex - trueIndex + middle - newMiddle) * delta
+
+                    series.animate({ property: "dx", to: dx }, series.interpolationDuration, series.interpolationEasing);
+                    series.bulletsContainer.animate({ property: "dx", to: dx }, series.interpolationDuration, series.interpolationEasing);
+                })
+            }
+        }
+
+        }
+
+    }
+
+</script>
+
+                <script type="text/javascript">
+
+
+                function showWheelChart(sub_ratings_data){
+                    // Themes begin
+                    am4core.useTheme(am4themes_animated);
+                    // Themes end
+
+                    /* Create chart instance */
+                    var chart_wheel = am4core.create("chartdiv_wheel", am4charts.RadarChart);
+
+                    chart_wheel.data = sub_ratings_data;
+                    /* Add data */
+                    // chart_wheel.data = [{
+                    //   "country": "Lithuania",
+                    //   "litres": 501
+                    // }];
+
+                    /* Create axes */
+                    var categoryAxis = chart_wheel.xAxes.push(new am4charts.CategoryAxis());
+                    categoryAxis.dataFields.category = "key";
+
+                    var valueAxis = chart_wheel.yAxes.push(new am4charts.ValueAxis());
+                    valueAxis.renderer.axisFills.template.fill = chart_wheel.colors.getIndex(2);
+                    valueAxis.renderer.axisFills.template.fillOpacity = 0.05;
+
+                    /* Create and configure series */
+                    var series = chart_wheel.series.push(new am4charts.RadarSeries());
+                    series.dataFields.valueY = "value";
+                    series.dataFields.categoryX = "key";
+                    series.name = "Attributes";
+                    series.strokeWidth = 3;
+                    series.fillOpacity = 0.2;
+
+                    // chart_wheel.scrollbarX = new am4core.Scrollbar();
+
+                }
+                </script>
+
+
+<!-- HTML -->
+<div class="chart-wrap" style="position: relative;max-width: 80%;margin: 0 auto;padding:0 40px 50px;background:transparent">
+	<div id="chartdiv" ></div>
+</div>
+
+
+
+<!-- No need to show -->
+<div id="temp_chart"></div>
+<div id="chartdiv_wheel"></div>
+
+
+
+
+
+<!-- <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script> -->
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+
+</body>
+</html>

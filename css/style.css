@@ -1,0 +1,137 @@
+body{
+    background:#e9f2f0 !important;
+}
+
+a {
+  color: #2c87f0;
+}
+
+.header {
+  background-color: #370a6b;
+  padding: 30px;
+  text-align: right;
+  font-size: 40px;
+  color: white;
+  font-family: 'Poppins', sans-serif;font-weight:700;
+}
+
+.wrapper-top{
+    display:flex;
+    justify-content:space-between;
+    padding:50px 80px;
+    padding-left: 240px;
+    padding-right: 240px;
+
+}
+
+.wrapper-top-ps{
+    display:flex;
+    justify-content:space-between;
+    padding:50px 80px;
+    padding-left: 240px;
+    padding-right: 240px;
+
+}
+
+.upperLeft {
+    background-color: #fff;
+    flex-basis: 30%;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px #cac6c6;
+    padding: 50px;
+}
+
+.upperLeft-ps {
+    background-color: #fff;
+    flex-basis: 30%;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px #cac6c6;
+    padding: 50px;
+}
+
+
+.upperMid {
+    background-color: #fff;
+    flex-basis: 30%;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px #cac6c6;
+    padding: 50px;
+}
+
+.upperRight {
+
+  background-color: #fff;
+  flex-basis:30%;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px #cac6c6;
+    padding: 50px;
+}
+
+
+
+
+.wrapper-mid{
+    display:flex;
+    justify-content:space-between;
+    padding:50px 80px;
+    padding-left: 240px;
+    padding-right: 240px;
+
+}
+.chartLeft {
+    background-color: #fff;
+    flex-basis: 55%;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px #cac6c6;
+    padding: 50px;
+}
+
+.chartRight {
+
+  background-color: #fff;
+  flex-basis:40%;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px #cac6c6;
+    padding: 50px;
+}
+
+.wrapper-bottom{
+    display:flex;
+    justify-content:space-between;
+    padding:50px 80px;
+     padding-left: 400px;
+}
+
+.bottom {
+
+    flex-basis: 80%;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px #cac6c6;
+    padding: 50px;
+    padding-left: 70px;
+    padding-right: 70px;
+     background:#fff;
+
+}
+
+
+#nationChart {
+    width: 100%;
+    height: 600px;
+    }
+
+
+#chartdiv {
+  width: 90%;
+  height: 500px;
+}
+
+#radarChart{
+  width: 100%;
+  height: 600px;
+}
+
+#chartdiv_wheel{
+    width: 100%;
+    height: 100% !important;
+}

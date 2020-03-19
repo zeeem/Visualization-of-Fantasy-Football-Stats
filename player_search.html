@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Player Search</title>
+    <link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <!-- Resources -->
+    <script src="https://www.amcharts.com/lib/4/themes/kelly.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+    <script src="https://www.amcharts.com/lib/4/core.js"></script>
+    <script src="https://www.amcharts.com/lib/4/charts.js"></script>
+    <script src="https://www.amcharts.com/lib/4/themes/material.js"></script>
+    <script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>
+    <script src="https://www.amcharts.com/lib/4/maps.js"></script>
+    <script src="https://www.amcharts.com/lib/4/geodata/worldHigh.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.11.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.11.0/firebase-firestore.js"></script>
+
+    <style>
+            #player_info_show{
+            font-family: 'Poppins', sans-serif;
+            font-weight:600;
+            text-align:center;
+            margin:15px 0px;
+            font-size:18px
+
+
+            }
+        </style>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+        https://firebase.google.com/docs/web/setup#available-libraries -->
+
+
+
+
+    </head>
+    <body>
+
+        <script type="text/javascript">
+
+    var attrData = []; //player attribute data
+    var playerInfoData = []; //player info data
+
+    var playerIDFromSearch; //player ID from the search bar
+
+    var is_running = false;
+
+
+
+
+    var data = data = [{"player_name": "Alexis Sanchez", "player_id": "184941"},
+    {"player_name": "Andrea Barzagli", "player_id": "137186"},
+    {"player_name": "Andres Iniesta", "player_id": "41"},
+    {"player_name": "Angel Di Maria", "player_id": "183898"},
+    {"player_name": "Arjen Robben", "player_id": "9014"},
+    {"player_name": "Arturo Vidal", "player_id": "181872"},
+    {"player_name": "Bastian Schweinsteiger", "player_id": "121944"},
+    {"player_name": "Carlos Tevez", "player_id": "143001"},
+    {"player_name": "Cesc Fabregas", "player_id": "162895"},
+    {"player_name": "Cristiano Ronaldo", "player_id": "20801"},
+    {"player_name": "David Alaba", "player_id": "197445"},
+    {"player_name": "David De Gea", "player_id": "193080"},
+    {"player_name": "David Silva", "player_id": "168542"},
+    {"player_name": "Diego Costa", "player_id": "179844"},
+    {"player_name": "Diego Godin", "player_id": "182493"},
+    {"player_name": "Eden Hazard", "player_id": "183277"},
+    {"player_name": "Edinson Cavani", "player_id": "179813"},
+    {"player_name": "Franck Ribery", "player_id": "156616"},
+    {"player_name": "Gareth Bale", "player_id": "173731"},
+    {"player_name": "Gerard Pique", "player_id": "152729"},
+    {"player_name": "Giorgio Chiellini", "player_id": "138956"},
+    {"player_name": "Gonzalo Higuain", "player_id": "167664"},
+    {"player_name": "Henrik Mkhitaryan", "player_id": "192883"},
+    {"player_name": "Hugo Lloris", "player_id": "167948"},
+    {"player_name": "Ivan Rakitic", "player_id": "168651"},
+    {"player_name": "James Rodriguez", "player_id": "198710"},
+    {"player_name": "Jerome Boateng", "player_id": "183907"},
+    {"player_name": "Karim Benzema", "player_id": "165153"},
+    {"player_name": "Kevin de Bruyne", "player_id": "192985"},
+    {"player_name": "Lionel Messi", "player_id": "158023"},
+    {"player_name": "Luis Suarez", "player_id": "176580"},
+    {"player_name": "Luka Modric", "player_id": "177003"},
+    {"player_name": "Manuel Neuer", "player_id": "167495"},
+    {"player_name": "Marco Reus", "player_id": "188350"},
+    {"player_name": "Mats Hummels", "player_id": "178603"},
+    {"player_name": "Mesut Oezil", "player_id": "176635"},
+    {"player_name": "Miranda", "player_id": "168609"},
+    {"player_name": "Neymar", "player_id": "190871"},
+    {"player_name": "Paul Pogba", "player_id": "195864"},
+    {"player_name": "Petr Cech", "player_id": "48940"},
+    {"player_name": "Philipp Lahm", "player_id": "121939"},
+    {"player_name": "Robert Enke", "player_id": "158400"},
+    {"player_name": "Robert Lewandowski", "player_id": "188545"},
+    {"player_name": "Santi Cazorla", "player_id": "146562"},
+    {"player_name": "Sergio Aguero", "player_id": "153079"},
+    {"player_name": "Sergio Busquets", "player_id": "189511"},
+    {"player_name": "Sergio Ramos", "player_id": "155862"},
+    {"player_name": "Thiago Silva", "player_id": "164240"},
+    {"player_name": "Thibaut Courtois", "player_id": "192119"},
+    {"player_name": "Thomas Mueller", "player_id": "189596"},
+    {"player_name": "Toni Kroos", "player_id": "182521"},
+    {"player_name": "Vincent Kompany", "player_id": "139720"},
+    {"player_name": "Wayne Rooney", "player_id": "54050"},
+    {"player_name": "Xavi Hernandez", "player_id": "10535"},
+    {"player_name": "Yaya Toure", "player_id": "20289"}];
+</script>
+
+
+<h1 class = "header" style = "font-family: 'Poppins', sans-serif;font-weight:700;margin:0">FIFA Fantasy League Helper</h1>
+
+        <div style="text-align:center;margin:60px 0 0;">
+		<h1 class = "" style = "font-family: 'Poppins', sans-serif;font-weight:700;margin:0">Select Any Player</h1>
+	</div>
+<div class="wrapper-top" style = "padding-left: 250px;display:flex;justify-content:space-between">
+
+
+    <div class = "upperMid" style="flex-basis:32%; text-align:center">
+            <div class="dropdown" >
+              <button class="btn btn-info btn-lg dropdown-toggle" type="button" id="dropdownMenuButton1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Select Player
+            </button>
+            <div id ="dropdown1" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+
+                <script type="text/javascript">
+                    for(var i = 0; i < data.length; i++) {
+
+                        playerid_string = String(data[i].player_id);
+                        var newLine = '<a class="dropdown-item" id= "'+ data[i].player_name +'" onclick="onclick_saveId('+ data[i].player_id +')">'+ data[i].player_name +'</a>';
+
+                        document.getElementById("dropdown1").innerHTML += newLine;
+                    }
+
+                    function onclick_saveId(option_id){
+                        if(is_running){
+                        RESET_SEARCH();
+                    } 
+                    temp_player_id = String(option_id);
+                    console.log(temp_player_id);
+
+                    // var attrData = []; //player attribute data
+                    // var playerInfoData = []; //player info data
+                    document.getElementById("wrapper-mid_").style.display = 'block';
+
+
+                    playerIDFromSearch = temp_player_id;
+                    query_and_show_all_charts();
+                    is_running = true;
+                 
+                }
+
+            </script>
+        </div>
+</div>
+<!-- 
+<div>
+    <button type="button" class="btn btn-info" style="text-align: center;" onclick="RESET_SEARCH()">Reset Search</button>
+</div> -->
+
+</div>
+
+<div class = "upperRight" style="flex-basis:32%; text-align:center">
+
+<!--  <button onclick="show_player_details_func()" class="btn btn-secondary" style = "box-shadow: 0 4px 8px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19); color: #fff; background-color: #17a2b8; border-color: #17a2b8;">See Player Details</button> -->
+ <div id="player_info_show" style="display: none;"> 
+ <p id="player_name">Player Name: </p>
+ <p id="player_overall">Player Overall: </p>
+ <p id="birthday">Player Birthday: </p>
+ <p id="height">Player Height: </p>
+ <p id="weight">Player Weight: </p>
+</div>
+
+
+
+ <script>
+    var st_to_show = '' ;
+    function show_player_details_func() {
+
+        document.getElementById("player_name").innerHTML += playerInfoData[4].value;
+        document.getElementById("player_overall").innerHTML += playerInfoData[2].value;
+        document.getElementById("height").innerHTML += playerInfoData[1].value;
+        document.getElementById("weight").innerHTML += playerInfoData[5].value;
+        document.getElementById("birthday").innerHTML += playerInfoData[0].value;
+        document.getElementById("player_info_show").style.display = 'block';
+
+  }
+
+  function RESET_SEARCH(){
+
+    attrData.length = 0; //player attribute data
+    playerInfoData.length = 0; //player info data
+
+    playerIDFromSearch.length = 0; //player ID from the search bar
+
+    str = '<p id="player_name">Player Name: </p> \n<p id="player_overall">Player Overall: </p> \n<p id="birthday">Player Birthday: </p> \n<p id="height">Player Height: </p> \n<p id="weight">Player Weight: </p>'
+    document.getElementById("player_info_show").innerHTML = str;
+    document.getElementById("chartdiv_wheel").style.display = 'block';
+    document.getElementById("chartdiv").style.display = 'block';
+    document.getElementById("player_info_show").style.display = 'none';
+
+  }
+
+</script>
+</div>
+<div class = " " style="flex-basis:32%;background:#fff;box-shadow:0px 0px 10px #cac6c6;height:298px">
+
+            <script type="text/javascript">
+
+
+                function showWheelChart(sub_ratings_data){
+                            // Themes begin
+                            am4core.useTheme(am4themes_animated);
+                            // Themes end
+
+                            /* Create chart instance */
+                            var chart_wheel = am4core.create("chartdiv_wheel", am4charts.RadarChart);
+
+                            chart_wheel.data = sub_ratings_data;
+                            /* Add data */
+                            // chart_wheel.data = [{
+                            //   "country": "Lithuania",
+                            //   "litres": 501
+                            // }];
+
+                            /* Create axes */
+                            var categoryAxis = chart_wheel.xAxes.push(new am4charts.CategoryAxis());
+                            categoryAxis.dataFields.category = "key";
+
+                            var valueAxis = chart_wheel.yAxes.push(new am4charts.ValueAxis());
+                            valueAxis.renderer.axisFills.template.fill = chart_wheel.colors.getIndex(2);
+                            valueAxis.renderer.axisFills.template.fillOpacity = 0.05;
+
+                            /* Create and configure series */
+                            var series = chart_wheel.series.push(new am4charts.RadarSeries());
+                            series.dataFields.valueY = "value";
+                            series.dataFields.categoryX = "key";
+                            series.name = "Attributes";
+                            series.strokeWidth = 3;
+                            series.fillOpacity = 0.2;
+
+                            // chart_wheel.scrollbarX = new am4core.Scrollbar();
+
+                        }
+                    </script>
+
+
+
+
+                    <div id="chartdiv_wheel"></div>
+                    <!-- amCharts -->
+
+
+
+                </div>
+
+
+</div>
+
+
+<div id="wrapper-mid_" class="wrapper-mid" style="display: none">
+    <div class = "chartLeft ">
+
+        <style>
+            #chartdiv {
+              width: 100%;
+              height: 500px;
+          }
+      </style>
+
+      <!-- Chart code -->
+      <script>
+
+                // function show_player_details_func(p1, p2) {
+                // return p1 * p2;   // The function returns the product of p1 and p2
+                // }
+
+                function showFullAttr_BarChart(attribute_data) {
+
+                // Themes begin
+                am4core.useTheme(am4themes_animated);
+                // Themes end
+
+                var chart = am4core.create("chartdiv", am4charts.XYChart);
+                chart.hiddenState.properties.opacity = 0; // this makes initial fade in effect
+
+                // chart.data = attrData;
+                chart.data = attribute_data;
+
+                // chart.data = getAttData().then(function(result) {
+                // 	// console.log( result)
+                // 	chart.data = result;
+                // 	chart2 = chart;
+                // 	console.log(chart.data);
+                // });
+
+                // setTimeout(console.log('waiting'), 10000);
+
+                tempD = [{
+                  "key": "One",
+                  "value": 3025
+              }, {
+                  "key": "Two",
+                  "value": 1882
+              }, {
+                  "key": "Three",
+                  "value": 1809
+              }, {
+                  "key": "Four",
+                  "value": 1322
+              }, {
+                  "key": "Five",
+                  "value": 1122
+              }, {
+                  "key": "Six",
+                  "value": -1114
+              }, {
+                  "key": "Seven",
+                  "value": -984
+              }, {
+                  "key": "Eight",
+                  "value": 711
+              }, {
+                  "key": "Nine",
+                  "value": 665
+              }, {
+                  "key": "Ten",
+                  "value": -580
+              }, {
+                  "key": "Eleven",
+                  "value": 443
+              }];
+
+
+              var categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
+              categoryAxis.renderer.grid.template.location = 0;
+              categoryAxis.dataFields.category = "key";
+              categoryAxis.renderer.minGridDistance = 30;
+                // categoryAxis.renderer.labels.template.rotation = 270;
+                categoryAxis.renderer.labels.template.horizontalCenter = "right";
+                categoryAxis.renderer.labels.template.verticalCenter = "middle";
+                categoryAxis.renderer.labels.template.rotation = 270;
+                categoryAxis.tooltip.disabled = true;
+                categoryAxis.renderer.minHeight = 110;
+
+                chart2 = chart;
+
+                var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+
+                var series = chart.series.push(new am4charts.CurvedColumnSeries());
+                series.dataFields.categoryX = "key";
+                series.dataFields.valueY = "value";
+                series.tooltipText = "{valueY.value}"
+                series.columns.template.strokeOpacity = 0;
+
+                series.columns.template.fillOpacity = 0.75;
+
+                var hoverState = series.columns.template.states.create("hover");
+                hoverState.properties.fillOpacity = 1;
+                hoverState.properties.tension = 0.4;
+
+                chart.cursor = new am4charts.XYCursor();
+
+                // Add distinctive colors for each column using adapter
+                series.columns.template.adapter.add("fill", function(fill, target) {
+                  return chart.colors.getIndex(target.dataItem.index);
+              });
+
+                chart.scrollbarX = new am4core.Scrollbar();
+
+            }
+
+
+                // async function getAttData() {
+                //     var tempData = await attrData;
+                //     // console.log(attrData);
+                //     return attrData;
+                // }
+
+            </script>
+
+
+            <!-- HTML -->
+            <div id="chartdiv"></div>
+
+
+        </div>
+
+
+            </div>
+
+
+
+            <script>
+                    // var attrData = []; //player attribute data
+                    // var playerInfoData = []; //player info data
+
+                    // var playerIDFromSearch; //player ID from the search bar
+                    // playerIDFromSearch = '158023' //it should be changed to the searched player ID
+
+
+                    var docs; //temp doc or response from firestore query
+                    var charts2; // replcia of chart for debugging
+
+                    var tempD; // temp sample data
+
+
+                    // Your web app's Firebase configuration
+                    var firebaseConfig = {
+                        apiKey: "AIzaSyB94wBHiiXMYK-IgEB--1FlS6it5i4ZZtE",
+                        authDomain: "fflh-e186e.firebaseapp.com",
+                        databaseURL: "https://fflh-e186e.firebaseio.com",
+                        projectId: "fflh-e186e",
+                        storageBucket: "fflh-e186e.appspot.com",
+                        messagingSenderId: "169781745481",
+                        appId: "1:169781745481:web:fb7e9abdfd03e0c7e3ac98"
+                    };
+                    // Initialize Firebase
+                    firebase.initializeApp(firebaseConfig);
+                </script>
+
+
+
+                <script type="text/javascript">
+
+                    function query_and_show_all_charts(){
+                        var db = firebase.firestore();
+                        db.collection("Player").where("player_fifa_api_id", "==", playerIDFromSearch)
+                        .get().then(function(querySnapshot) {
+                            querySnapshot.forEach(function(doc) {
+                        // doc.data() is never undefined for query doc snapshots
+                        console.log(doc.id, " => ", doc.data());
+
+                        docs = doc.data();
+
+                        attributes = docs.attributes;
+
+
+                        if (!doc.exists) {
+                            console.log('No such document!');
+                        } else {
+                                // console.log(Object.keys(docs.attributes));
+                                var attrKeysObj = Object.keys(docs.attributes);
+                                var playerInfoObj = Object.keys(docs);
+                            }
+
+                        // saving player info
+                        playerInfoObj.forEach(element => {
+                              // console.log(element);
+                                // element_ = element.replace("_", " ").toLowerCase();
+                                // element_ = element_[0].toUpperCase() + element_.slice(1,element_.length);
+
+                                if(element == "attributes"){
+                                    return; //skipping overall_rating from attrData
+                                }
+
+                                playerInfoVal = {
+                                    "key": element,
+                                    "value" : docs[element]
+                                };
+                                playerInfoData.push(playerInfoVal);
+                        }); //end forEach
+
+                        console.log(playerInfoData);
+                        // saving player attributes
+                        attrKeysObj.forEach(element => {
+                              // console.log(element);
+                              if(Number.isInteger(docs.attributes[element])){
+                                element_ = element.replace("_", " ").toLowerCase();
+                                element_ = element_[0].toUpperCase() + element_.slice(1,element_.length);
+                                if(element == "overall_rating"){
+                                    return; //skipping overall_rating from attrData
+                                }
+                                attrVal = {
+                                    "key": element_,
+                                    "value" : docs.attributes[element]
+                                };
+                                attrData.push(attrVal);
+                            }
+                        }); //end forEach
+
+                    });
+
+                    //starting the full attribute chart
+                    showFullAttr_BarChart(attrData);
+
+                    //calculating Sub Ratings
+                    var playerSubRatings = calculateSubRatings(attrData);
+
+                    //starting the sub rating wheel chart
+                    showWheelChart(playerSubRatings);
+
+                    //show player details in html
+                    show_player_details_func();
+
+                }); //firestore query
+                    }
+
+
+                    function calculateSubRatings(attribute_array) {
+
+                        var pace = (attribute_array[0].value +
+                            attribute_array[27].value) / 2;
+
+                        var shooting = (attribute_array[22].value +
+                            attribute_array[8].value +
+                            attribute_array[25].value +
+                            attribute_array[19].value +
+                            attribute_array[32].value +
+                            attribute_array[21].value) / 6;
+
+                        var passing = (attribute_array[31].value +
+                            attribute_array[5].value +
+                            attribute_array[9].value +
+                            attribute_array[24].value +
+                            attribute_array[18].value +
+                            attribute_array[6].value) / 6;
+
+                        var dribbling = (attribute_array[2].value +
+                            attribute_array[3].value +
+                            attribute_array[23].value +
+                            attribute_array[4].value +
+                            attribute_array[7].value) / 5;
+
+                        var defending = (attribute_array[16].value +
+                            attribute_array[15].value +
+                            attribute_array[20].value +
+                            attribute_array[29].value +
+                            attribute_array[26].value) / 5;
+
+                        var physical = (attribute_array[17].value +
+                            attribute_array[28].value +
+                            attribute_array[30].value +
+                            attribute_array[1].value) / 4;
+
+                    // subRatingResult = {
+                    // 	"pace" : pace,
+                    // 	"shooting" : shooting,
+                    // 	"passing" : passing,
+                    // 	"dribbling" : dribbling,
+                    // 	"defending" : defending,
+                    // 	"physical" : physical
+                    // };
+
+                    subRatingResult = [{
+                      "key": "Pace",
+                      "value": pace
+                  }, {
+                      "key": "Shooting",
+                      "value": shooting
+                  }, {
+                      "key": "Passing",
+                      "value": passing
+                  }, {
+                      "key": "Dribbling",
+                      "value": dribbling
+                  }, {
+                      "key": "Defending",
+                      "value": defending
+                  }, {
+                      "key": "Physical",
+                      "value": physical
+                  }]
+
+                  return subRatingResult;
+
+              }
+
+
+
+          </script>
+
+          <!-- Styles -->
+
+
+
+          <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+          <!-- Include all compiled plugins (below), or include individual files as needed -->
+          <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+
+          <!-- Latest compiled and minified CSS -->
+          <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+          <!-- Optional theme -->
+          <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+          <!-- Latest compiled and minified JavaScript -->
+          <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+      </body>
+      </html>

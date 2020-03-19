@@ -1,0 +1,97 @@
+<html>  
+<head>
+    <title>Homepage</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+    <script src="https://www.amcharts.com/lib/4/core.js"></script>
+    <script src="https://www.amcharts.com/lib/4/charts.js"></script>
+    <script src="https://www.amcharts.com/lib/4/themes/material.js"></script>
+    <script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>
+    <script src="https://www.amcharts.com/lib/4/maps.js"></script>
+    <script src="https://www.amcharts.com/lib/4/geodata/worldHigh.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+
+<body>
+
+
+
+<h1 class = "header" style = "font-family: 'Poppins', sans-serif;font-weight:700">FIFA Fantasy League Helper</h1>
+
+
+    <div class="wrapper-top">
+
+        <div class = "upperLeft" style="text-align:center;flex-basis:40%">
+            <button type="button" class="btn btn-info" style = "padding: 20px 40px;font-size: 18px;" onclick="button_goto_playerSearch()">Player Search
+            <img src="https://cdn2.iconfinder.com/data/icons/font-awesome/1792/search-512.png" style = "position: relative;left: 4px;top: -1px;display: inline-block; width: 20px; height: 20px;margin: 0;padding: 0;" alt="" title="Bootstrap">
+            </button>
+
+        </div>
+
+
+        <div class = "upperRight" style="text-align:center;flex-basis:40%">
+
+
+            <button type="button" class="btn btn-info" style = "padding: 20px 40px;font-size: 18px;" onclick="button_goto_playercomparison()">Player Comparison
+            <img src="https://static.thenounproject.com/png/71604-200.png" style = "position: relative;left: 4px;top: -1px;display: inline-block; width: 20px; height: 20px;margin: 0;padding: 0;" alt="" title="Bootstrap">
+            </button>
+        </div>
+    </div>
+
+
+    <div class="wrapper-mid">
+        <div class = "chartLeft ">
+
+            <h2 style="position: relative; text-align: left;left: 80px;font-family: 'Poppins', sans-serif;font-weight:700" >Point Tables for 2018-19</h2>
+            <div id="nationChart"></div>
+
+
+        </div>
+
+        <div class = "chartRight ">
+
+            <h2 style="position: relative; left: 80px; text-align: left; font-family: 'Poppins', sans-serif;font-weight:700" >Top Rated Teams</h2>
+            <div id="radarChart"></div>
+
+
+
+        </div>
+    </div>
+
+
+
+    <div class="wrapper-bottom">
+
+            <div class = "bottom">
+
+
+                <h1 style="position: relative; left: 80px;font-family: 'Poppins', sans-serif;font-weight:700" >Top 5 All-time Goal Scorers</h1>
+               <!-- Top Players Chart -->
+                <div id="chartdiv"></div>
+
+
+            </div>
+
+
+
+    </div>
+
+    <script type="text/javascript">
+        function button_goto_playercomparison(){
+            window.open("player_comparison.html");
+        }
+        function button_goto_playerSearch(){
+            window.open("player_search.html");
+        }
+    </script>
+
+    <script type="text/javascript" src="charts.js"></script>
+    <!--Bootstrap -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+</body>  
+
+</html>
