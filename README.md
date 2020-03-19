@@ -8,8 +8,7 @@ A real-time JS based Web App for visualizing fantasy football stats, developed w
 
 
 ## Running the live application
-`link will be provided here soon`
-
+[Visualization-of-Fantasy-Football-Stats](https://zeeem.github.io/Visualization-of-Fantasy-Football-Stats/)
 
 
 ### Usage
